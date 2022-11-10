@@ -1,0 +1,14 @@
+586  docker build . -t "fio:1.0"
+  587  docker run --mount type=bind,source="$(pwd)/fioread.ini",target=/opt/fioread.ini --env  FIO_CFG_FILE="fioread.ini" -it fio:1.0 bash
+  588  docker build . -t "fio:1.0"
+  589  docker run --mount type=bind,source="$(pwd)/fioread.ini",target=/opt/fioread.ini --env  FIO_CFG_FILE="fioread.ini" -it fio:1.0 bash
+  590  docker build . -t "fio:1.0"
+  591  docker run --mount type=bind,source="$(pwd)/fioread.ini",target=/opt/fioread.ini --env  FIO_CFG_FILE="fioread.ini" -it fio:1.0 bash
+
+595  docker run --mount type=bind,source="$(pwd)/fioread.ini",target=/opt/fioread.ini --env  FIO_CFG_FILE="fioread.ini" -it fio:1.0 bash
+  598  docker run --mount type=bind,source="$(pwd)/fioread.ini",target=/opt/fioread.ini --env  FIO_CFG_FILE="fioread.ini" -it fio:1.0 bash
+  599  docker build . -t "fio:1.0"
+  600  cd /var/lib/docker/tmp/
+  601  cd /var/lib/docker/tmp
+  602  docker build . -t "fio:1.0"
+  603  docker run --mount type=bind,source="$(pwd)/fioread.ini",target=/opt/fioread.ini --env  FIO_CFG_FILE="fioread.ini" -it fio:1.0 -- bash
