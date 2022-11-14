@@ -10,8 +10,8 @@ spec:
       storage: 100Ti
   storageClassName: "azurefile-csi-nfs"
 ---
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: batch/v1
+kind: Job
 metadata:
   name: fio-tester-read
   labels:
@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
       - name: fio-container
-        image: dapolinaaks.azurecr.io/fio:1.0
+        image: dapolinaaks.azurecr.io/fio:1.4
         volumeMounts:
         - name: fio-data
           mountPath: "/mnt/azurefiles"
@@ -42,7 +42,7 @@ spec:
           mountPath: /opt/config/fio.ini
           subPath: file-from-cfgmap
         command: 
-        - "/bin/bash"
+        - "fio"
         - "/opt/config/fio.ini"
       volumes:
       - name: fio-data
