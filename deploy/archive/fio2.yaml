@@ -1,0 +1,57 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc-azurefile-data
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Ti
+  storageClassName: "azurefile-csi-nfs"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fio-tester-read
+  labels:
+    app: fio-testing-read
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  replicas: 1
+  
+  selector:
+    matchLabels:
+      app: fio-testing-read
+  template:
+    metadata:
+      labels:
+        app: fio-testing-read
+    spec:
+      containers:
+      - name: fio-container
+        image: dapolinaaks.azurecr.io/fio:1.5
+        ports:
+        - containerPort: 8000
+        volumeMounts:
+        - name: fio-data
+          mountPath: "/mnt/azurefiles"
+        - name: mnt
+          mountPath: /opt/config/fio.ini
+          subPath: file-from-cfgmap
+        command: 
+        - "/opt/run.sh"
+        - "/opt/config/fio.ini"
+      volumes:
+      - name: fio-data
+        persistentVolumeClaim:
+          claimName: pvc-azurefile-data
+      - name: mnt
+        configMap:
+          name: fio-cfgmap
+  
+      
