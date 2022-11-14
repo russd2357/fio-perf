@@ -21,7 +21,7 @@ fi
 
 echo "Running fio benchmark using the following file $FILE with a runtime of $RUNTIME"
 
-fio $FILE --output=$OUTPUT --runtime $RUNTIME 
+fio --runtime $RUNTIME --output=$OUTPUT $FILE 
 
 echo "Completed Testing"
 cat $OUTPUT
