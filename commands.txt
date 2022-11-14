@@ -12,3 +12,6 @@
   601  cd /var/lib/docker/tmp
   602  docker build . -t "fio:1.0"
   603  docker run --mount type=bind,source="$(pwd)/fioread.ini",target=/opt/fioread.ini --env  FIO_CFG_FILE="fioread.ini" -it fio:1.0 -- bash
+
+
+  \fio.exe --directory=y\:\ --nrfiles=4 --rw=randread --bs=4k --numjobs=16 --iodepth=16 --size=1G --runtime=60 --group_reporting --name=job --direct=1 --time_based
