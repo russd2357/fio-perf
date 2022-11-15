@@ -5,12 +5,12 @@ metadata:
 data:
   file-from-cfgmap: |
     [global]
-    size=256m
+    size=5g
     direct=1
     iodepth=256
     ioengine=libaio
     bs=4k
-    numjobs=1
+    numjobs=16
 
     [writer1]
     rw=randwrite

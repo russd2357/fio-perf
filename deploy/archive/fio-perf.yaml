@@ -1,25 +1,32 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: pvc-azurefile-fio
+  name: pvc-azurefile-test
 spec:
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: 10Ti
+      storage: 100Ti
   storageClassName: "azurefile-csi-nfs"
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: fio-tester-write
+  name: fio-tester-read
   labels:
-    app: fio-testing-write
+    app: fio-testing-read
 spec:
-  backoffLimit: 5
-  parallelism: 5
-  ttlSecondsAfterFinished: 600
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  replicas: 1
+  
+  selector:
+    matchLabels:
+      app: fio-testing-read
   template:
     metadata:
       labels:
@@ -27,10 +34,7 @@ spec:
     spec:
       containers:
       - name: fio-container
-        image: dapolinaaks.azurecr.io/fio:1.8
-        env:
-        - name: RUNTIME
-          value: "600"
+        image: dapolinaaks.azurecr.io/fio:1.4
         volumeMounts:
         - name: fio-data
           mountPath: "/mnt/azurefiles"
@@ -38,15 +42,14 @@ spec:
           mountPath: /opt/config/fio.ini
           subPath: file-from-cfgmap
         command: 
-        - "/opt/run.sh"
+        - "fio"
         - "/opt/config/fio.ini"
       volumes:
       - name: fio-data
         persistentVolumeClaim:
-          claimName: pvc-azurefile-fio
+          claimName: pvc-azurefile-test
       - name: mnt
         configMap:
           name: fio-cfgmap
-      restartPolicy: Never
   
       
