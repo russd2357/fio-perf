@@ -7,7 +7,7 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 100Ti
+      storage: 10Ti
   storageClassName: "azurefile-csi-nfs"
 ---
 apiVersion: batch/v1
@@ -18,9 +18,8 @@ metadata:
     app: fio-testing-write
 spec:
   backoffLimit: 5
-  activeDeadlineSeconds: 100
-  parallelism: 15
-  ttlSecondsAfterFinished: 240
+  parallelism: 5
+  ttlSecondsAfterFinished: 600
   template:
     metadata:
       labels:
@@ -28,7 +27,7 @@ spec:
     spec:
       containers:
       - name: fio-container
-        image: dapolinaaks.azurecr.io/fio:1.6
+        image: dapolinaaks.azurecr.io/fio:1.8
         env:
         - name: RUNTIME
           value: "600"
