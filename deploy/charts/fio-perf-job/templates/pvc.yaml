@@ -1,0 +1,11 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc-{{ .Release.Name | lower  }}
+spec:
+  accessModes:
+    - {{ .Values.persistentvolumeclaim.spec.accessModes }}
+  resources:
+    requests:
+      storage: {{ .Values.persistentvolumeclaim.resources.requests.storage }}
+  storageClassName: "azurefile-csi-nfs"

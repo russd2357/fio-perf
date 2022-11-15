@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: fio-tester-write
+  labels:
+    app: fio-testing-write
+spec:
+  backoffLimit: {{ .Values.job.backoffLimit}}
+  parallelism: {{ .Values.job.parallelism}}
+  ttlSecondsAfterFinished: {{ .Values.job.ttlSecondsAfterFinished}}
+  template:
+    metadata:
+      labels:
+        app: fio-testing-read
+    spec:
+      containers:
+      - name: fio-container
+        image: dapolinaaks.azurecr.io/fio:2.0
+        env:
+        - name: RUNTIME
+          value: "600"
+        volumeMounts:
+        - name: fio-data
+          mountPath: "/mnt/azurefiles"
+        - name: mnt
+          mountPath: /opt/config/fio.ini
+          subPath: file-from-cfgmap
+        command: 
+        - "/opt/run.sh"
+        - "/opt/config/fio.ini"
+      volumes:
+      - name: fio-data
+        persistentVolumeClaim:
+          claimName: pvc-{{.Release.Name | lower }}
+      - name: mnt
+        configMap:
+          name: {{ .Release.Name }}-configmap
+      restartPolicy: Never
+  
+      
