@@ -5,7 +5,7 @@ metadata:
 data:
     
     file-from-cfgmap: |
-    {{ range .Files.Lines "fio.ini" }}
+    {{ range .Files.Lines "config/fio.ini" }}
     {{ . | indent 4 }}{{ end }}
 
    
