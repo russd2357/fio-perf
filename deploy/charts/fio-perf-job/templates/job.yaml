@@ -14,11 +14,12 @@ spec:
         app: fio-testing-read
     spec:
       containers:
-      - name: fio-container
-        image: dapolinaaks.azurecr.io/fio:2.0
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
         - name: RUNTIME
-          value: "600"
+          value: {{ .Values.env.runtime | quote}}
         volumeMounts:
         - name: fio-data
           mountPath: "/mnt/azurefiles"

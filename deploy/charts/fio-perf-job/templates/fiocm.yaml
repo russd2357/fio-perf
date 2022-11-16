@@ -3,6 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-configmap
 data:
+    
     file-from-cfgmap: |
     {{ range .Files.Lines "fio.ini" }}
     {{ . | indent 4 }}{{ end }}

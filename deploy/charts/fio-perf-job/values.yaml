@@ -21,3 +21,12 @@ job:
   ttlSecondsAfterFinished: 600
 
 fioconfig: "fio.ini"
+
+image:
+  repository: dapolloxp/fio
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart version.
+  tag: "2.0"
+
+env:
+  runtime: 600
