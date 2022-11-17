@@ -8,4 +8,8 @@ spec:
   resources:
     requests:
       storage: {{ .Values.persistentvolumeclaim.resources.requests.storage }}
+  {{ if eq .Values.storageclass.parameters.protocol "nfs" }}
   storageClassName: "azurefile-csi-nfs"
+  {{ else }}
+  storageClassName: "azurefile-csi-premium"
+  {{ end }}

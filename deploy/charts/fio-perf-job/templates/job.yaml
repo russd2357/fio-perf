@@ -1,24 +1,27 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: fio-tester-write
+  name: {{ include "fio-perf-job.fullname" . }}
   labels:
-    app: fio-testing-write
+    {{- include "fio-perf-job.labels" . | nindent 4 }}
 spec:
-  backoffLimit: {{ .Values.job.backoffLimit}}
-  parallelism: {{ .Values.job.parallelism}}
-  ttlSecondsAfterFinished: {{ .Values.job.ttlSecondsAfterFinished}}
+  backoffLimit: {{ .Values.job.backoffLimit | default 5 }}
+  parallelism: {{ .Values.job.parallelism | default 5 }}
+  {{ if not (empty .Values.job.ttlSecondsAfterFinished) }}
+  ttlSecondsAfterFinished: {{ .Values.job.ttlSecondsAfterFinished }}
+  {{ end }}
   template:
     metadata:
       labels:
-        app: fio-testing-read
+        {{- include "fio-perf-job.labels" . | nindent 8 }}
     spec:
       containers:
-      - name: fio-container
-        image: dapolinaaks.azurecr.io/fio:2.0
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
         - name: RUNTIME
-          value: "600"
+          value: {{ .Values.env.runtime | quote}}
         volumeMounts:
         - name: fio-data
           mountPath: "/mnt/azurefiles"

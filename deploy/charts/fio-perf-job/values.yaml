@@ -1,6 +1,6 @@
 storageclass:
   parameters:
-    protocol: nfs
+    protocol: smb # nfs or smb
     skuName: Premium_LRS  # available values: Premium_LRS, Premium_ZRS
     enableLargeFileShares: "true"
     shareName: "nfsshare"
@@ -18,6 +18,15 @@ persistentvolumeclaim:
 job:
   backoffLimit: 5
   parallelism: 5
-  ttlSecondsAfterFinished: 600
+  ttlSecondsAfterFinished: 
 
-fioconfig: "fio.ini"
+fioconfig: "config/fio.ini"
+
+image:
+  repository: dapolloxp/fio
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart version.
+  tag: "2.0"
+
+env:
+  runtime: 600
