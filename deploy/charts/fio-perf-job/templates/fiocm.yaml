@@ -3,7 +3,4 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-configmap
 data:
-  file-from-cfgmap: |
-    {{ $parts := split "\n" .Values.fioconfig}}
-    {{ range $lines := $parts}}
-      {{ . | indent 4 }}{{ end }}
+  file-from-cfgmap: {{ toYaml .Values.fioconfig | indent 2}}

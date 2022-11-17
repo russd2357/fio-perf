@@ -1,6 +1,6 @@
 storageclass:
   parameters:
-    protocol: nfs
+    protocol: smb # nfs or smb
     skuName: Premium_LRS  # available values: Premium_LRS, Premium_ZRS
     enableLargeFileShares: "true"
     shareName: "nfsshare"
@@ -18,7 +18,7 @@ persistentvolumeclaim:
 job:
   backoffLimit: 5
   parallelism: 5
-  ttlSecondsAfterFinished: 600
+  ttlSecondsAfterFinished: 
 
 fioconfig: "config/fio.ini"
 
