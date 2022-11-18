@@ -10,3 +10,15 @@ Session.vim
 *.tgz
 
 archive/*
+
+*.tfvars
+
+
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+*.lock.hcl
