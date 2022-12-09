@@ -15,9 +15,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-      
-    - name: set path
-      run: cd ./deploy/dockerBuild; pwd; echo $GITHUB_PATH;ls
     
     - name: Build the Docker image
       run: cd ./deploy/dockerBuild; docker build . --file Dockerfile --tag my-image-name:$(date +%s)
