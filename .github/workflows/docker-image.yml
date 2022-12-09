@@ -20,5 +20,5 @@ jobs:
       run: cd ./deploy/dockerBuild; pwd; echo $GITHUB_PATH;ls
     
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: cd ./deploy/dockerBuild; docker build . --file Dockerfile --tag my-image-name:$(date +%s)
  
