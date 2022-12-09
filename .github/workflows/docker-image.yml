@@ -16,8 +16,8 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
       
-    - name: cmd script
-      run: echo "working dir" pwd;ls
+    - name: set path
+      run: cd ./deploy/dockerBuild
     
     - name: Build the Docker image
-      run: docker build . --file ./deploy/dockerBuild/Dockerfile --tag my-image-name:$(date +%s)
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
