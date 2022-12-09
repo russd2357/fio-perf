@@ -17,7 +17,7 @@ jobs:
       uses: actions/checkout@v3
       
     - name: set path
-      run: cd ./deploy/dockerBuild
+      run: cd ./deploy/dockerBuild; ls
     
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
