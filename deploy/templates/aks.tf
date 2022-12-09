@@ -1,5 +1,9 @@
 provider "azurerm" {
-  features {}
+  features {
+    resource_group {
+       prevent_deletion_if_contains_resources = false
+     }
+  }
 }
 
 resource "azurerm_resource_group" "aks-rg" {
@@ -14,12 +18,12 @@ resource "azurerm_user_assigned_identity" "aks_master_identity" {
 }
 
 resource "azurerm_kubernetes_cluster" "aks_c" {
-  name                = var.aksname
-  location            = azurerm_resource_group.aks-rg.location
-  resource_group_name = azurerm_resource_group.aks-rg.name
-  dns_prefix          = var.aksname
+  name                      = var.aksname
+  location                  = azurerm_resource_group.aks-rg.location
+  resource_group_name       = azurerm_resource_group.aks-rg.name
+  dns_prefix                = var.aksname
   workload_identity_enabled = true
-  oidc_issuer_enabled = true
+  oidc_issuer_enabled       = true
 
   network_profile {
     network_plugin     = "azure"
@@ -31,15 +35,15 @@ resource "azurerm_kubernetes_cluster" "aks_c" {
   }
 
   default_node_pool {
-    name       = "default"
-    node_count = var.node_count
-    vm_size    = var.vm_sku
-    vnet_subnet_id  = azurerm_subnet.akssubnet.id
+    name           = "default"
+    node_count     = var.node_count
+    vm_size        = var.vm_sku
+    vnet_subnet_id = azurerm_subnet.akssubnet.id
   }
 
   identity {
-    type                      = "UserAssigned"  
-    identity_ids              = [azurerm_user_assigned_identity.aks_master_identity.id]
+    type         = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.aks_master_identity.id]
   }
 }
 

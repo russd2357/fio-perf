@@ -3,10 +3,48 @@ variable "aksname" {
   default = "dapolinafilesperf"
 }
 
+variable "list" {
+  type        = list(string)
+  description = "storage accounts"
+  default = [ "dapolinafilesperf01", "dapolinafilesperf02", "dapolinafilesperf03"]
+}
+
+variable "containers" {
+  type        = list(string)
+  description = "list of shares"
+  default = [ "share1"]
+}
+variable "storageaccountname" {
+  type    = string
+  default = "dapolinasafileperf"
+}
+
+variable "account_tier" {
+  type = string
+  default = "Premium"
+  
+}
+
+variable "nfs_share_enabled" {
+  type = bool
+  default = true
+}
+
+variable "num_storage_accounts" {
+  default = 1 
+}
+
+
+variable "account_kind" {
+  type = string
+  default = "FileStorage"
+}
+
 variable "azure_location" {
   type    = string
   default = "centralus"
 }
+
 
 
 variable "vm_sku" {
