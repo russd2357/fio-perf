@@ -24,6 +24,22 @@ resource "azurerm_kubernetes_cluster" "aks_c" {
   dns_prefix                = var.aksname
   workload_identity_enabled = true
   oidc_issuer_enabled       = true
+  linux_profile {
+    admin_username = "azureuser"
+    ssh_key {
+      key_data = var.ssh_key
+    }
+
+  }
+  
+
+  auto_scaler_profile {
+    expander              = "most-pods"
+    scan_interval         = "60s"
+    empty_bulk_delete_max = "100"
+    scale_down_delay_after_add = "4m"
+    scale_down_unready  = "4m"
+  }
 
   network_profile {
     network_plugin     = "azure"
@@ -39,6 +55,10 @@ resource "azurerm_kubernetes_cluster" "aks_c" {
     node_count     = var.node_count
     vm_size        = var.vm_sku
     vnet_subnet_id = azurerm_subnet.akssubnet.id
+    enable_auto_scaling = true
+    max_count           = 20
+    min_count           = 1
+    kubelet_disk_type   = "Temporary"
   }
 
   identity {

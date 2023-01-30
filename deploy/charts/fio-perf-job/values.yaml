@@ -13,11 +13,11 @@ persistentvolumeclaim:
     accessModes: ReadWriteMany
   resources:
     requests:
-      storage: 10Ti
+      storage: 100Ti
     
 job:
   backoffLimit: 5
-  parallelism: 5
+  parallelism: 1
   ttlSecondsAfterFinished: 
 
 fioconfig: "config/fio.ini"
