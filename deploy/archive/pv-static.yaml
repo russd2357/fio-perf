@@ -19,8 +19,8 @@ spec:
     # `#` is not allowed in self defined volumeHandle
     volumeHandle: unique-volumeid01
     volumeAttributes:
-      resourceGroup: MC_formsai_dapolina_centralus # optional, only set this when storage account is not in the same resource group as agent node
-      storageAccount: dapolinasa
+      resourceGroup: aks-rg # optional, only set this when storage account is not in the same resource group as agent node
+      storageAccount: dapolinasafileperf
       shareName: nfsshare  # only file share name, don't use full path
       protocol: nfs
 ---
