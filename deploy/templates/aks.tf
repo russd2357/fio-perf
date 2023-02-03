@@ -49,7 +49,7 @@ resource "azurerm_kubernetes_cluster" "aks_c" {
     vm_size        = var.vm_sku
     vnet_subnet_id = azurerm_subnet.akssubnet.id
     enable_auto_scaling = true
-    max_count           = 20
+    max_count           = 25
     min_count           = 1
     kubelet_disk_type   = "Temporary"
   }
