@@ -12,7 +12,8 @@ Session.vim
 archive/*
 
 *.tfvars
-
+**/archive/*
+**/ignore/*
 
 # Local .terraform directories
 **/.terraform/*

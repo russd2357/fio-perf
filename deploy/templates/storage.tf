@@ -3,10 +3,8 @@ data "http" "myip" {
 }
 
 resource "azurerm_storage_account" "storage_account" {
-  for_each = toset(var.list) 
-  name = each.value
-  //count = 5
- // name = "dapolina${count.index}"  
+
+  name = var.storageaccountname
   resource_group_name = azurerm_resource_group.aks-rg.name
   location = azurerm_resource_group.aks-rg.location
   account_tier = var.account_tier
@@ -34,10 +32,66 @@ locals {
 }
 
 resource "azurerm_storage_share" "azurefileshare" {
-//  for_each             = {for idx, val in local.flat_list: idx => val}
-for_each = azurerm_storage_account.storage_account
   name                 = var.nfs_share_enabled ? "nfsshare" : "smbshare"  
-  quota                = 51200  
-  storage_account_name = each.value.name
+  quota                = 102400  
+  storage_account_name = azurerm_storage_account.storage_account.name
   enabled_protocol     = var.nfs_share_enabled ? "NFS" : "SMB"  
 }
+
+resource "azurerm_monitor_diagnostic_setting" "storage_diag" {
+  name               = "storage_diag"
+  target_resource_id = "${azurerm_storage_account.storage_account.id}/fileServices/default"
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.law_c.id
+
+  log {
+    category = "StorageRead"
+    enabled  = true
+
+    retention_policy {
+      enabled = false
+    }
+   }
+   
+   log {
+    category = "StorageWrite"
+    enabled  = true
+
+    retention_policy {
+      enabled = false
+    }
+   }
+   
+   log {
+    category = "StorageDelete"
+    enabled  = true
+
+    retention_policy {
+      enabled = false
+    }
+   }
+  
+
+  metric {
+    category = "AllMetrics"
+
+    retention_policy {
+      enabled = false
+    }
+  }
+}
+/*
+resource "azurerm_monitor_diagnostic_setting" "file_diag" {
+  name               = "storage_diag"
+  target_resource_id = azurerm_storage_share.azurefileshare.resource_manager_id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.law_c.id
+
+  
+
+  enabled_log {
+    category = "AuditEvent"
+
+    retention_policy {
+      enabled = false
+    }
+  } 
+}*/

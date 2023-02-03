@@ -6,7 +6,7 @@ variable "aksname" {
 variable "list" {
   type        = list(string)
   description = "storage accounts"
-  default = [ "dapolinafilesperf01", "dapolinafilesperf02", "dapolinafilesperf03"]
+  default = [ "dapolinafilesperf01"]
 }
 
 variable "containers" {
@@ -27,7 +27,7 @@ variable "account_tier" {
 
 variable "nfs_share_enabled" {
   type = bool
-  default = true
+  default = false
 }
 
 variable "num_storage_accounts" {

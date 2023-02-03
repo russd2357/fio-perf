@@ -24,13 +24,6 @@ resource "azurerm_kubernetes_cluster" "aks_c" {
   dns_prefix                = var.aksname
   workload_identity_enabled = true
   oidc_issuer_enabled       = true
-  linux_profile {
-    admin_username = "azureuser"
-    ssh_key {
-      key_data = var.ssh_key
-    }
-
-  }
   
 
   auto_scaler_profile {
@@ -68,6 +61,16 @@ resource "azurerm_kubernetes_cluster" "aks_c" {
 }
 
 data "azurerm_subscription" "current_sub" {
+}
+
+resource "null_resource" "azure_files_secret_smb" {
+  provisioner "local-exec" {
+    when    = create
+    command = <<EOF
+    az aks get-credentials --resource-group ${azurerm_resource_group.aks-rg.name} --name ${azurerm_kubernetes_cluster.aks_c.name} --overwrite-existing
+    kubectl create secret generic azure-secret --from-literal=azurestorageaccountname=${azurerm_storage_account.storage_account.name} --from-literal=azurestorageaccountkey=${azurerm_storage_account.storage_account.primary_access_key}
+  EOF
+  }
 }
 
 resource "azurerm_role_assignment" "rbac_assignment_sub_network_c" {

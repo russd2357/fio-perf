@@ -1,0 +1,40 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-azurefile-static
+spec:
+  capacity:
+    storage: {{ .Values.persistentvolumeclaim.resources.requests.storage}}
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain  # if set as "Delete" file share would be removed in pvc deletion
+  {{ if eq .Values.storageclass.parameters.protocol "nfs" }}
+  storageClassName: "azurefile-csi-nfs"
+  mountOptions:
+    - nconnect=8
+  {{ else }}
+  storageClassName: "azurefile-csi-premium"
+  {{ end }}
+  
+  csi:
+    driver: file.csi.azure.com
+    readOnly: false
+    # make sure this volumeid is unique in the cluster
+    # `#` is not allowed in self defined volumeHandle
+    volumeHandle: unique-volumeid01
+    {{ if eq .Values.storageclass.parameters.protocol "nfs" }}
+    nodeStageSecretRef:
+      name: azure-secret
+      namespace: default
+    {{ end}}
+    volumeAttributes:
+      resourceGroup: {{ .Values.aksRG }} # optional, only set this when storage account is not in the same resource group as agent node
+      storageAccount: {{ .Values.storageclass.parameters.storageAccountName}}
+      shareName: {{ .Values.storageclass.parameters.shareName | default "nfsshare" | quote }}
+      {{ if eq .Values.storageclass.parameters.protocol "nfs" }}
+      protocol: nfs
+      {{ else }}
+      protocol: smb
+      {{ end }}   
+---
