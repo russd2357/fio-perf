@@ -23,7 +23,6 @@ spec:
             cpu: "250m"
           limits:
             memory: "2048Mi"
-
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}" 
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:

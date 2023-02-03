@@ -12,7 +12,7 @@ variable "list" {
 variable "containers" {
   type        = list(string)
   description = "list of shares"
-  default = [ "share1"]
+  default = [ "fileshare01"]
 }
 variable "storageaccountname" {
   type    = string

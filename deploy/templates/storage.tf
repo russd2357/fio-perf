@@ -32,7 +32,7 @@ locals {
 }
 
 resource "azurerm_storage_share" "azurefileshare" {
-  name                 = var.nfs_share_enabled ? "nfsshare" : "smbshare"  
+  name                 = "fileshare01"  
   quota                = 102400  
   storage_account_name = azurerm_storage_account.storage_account.name
   enabled_protocol     = var.nfs_share_enabled ? "NFS" : "SMB"  
