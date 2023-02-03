@@ -20,7 +20,7 @@ persistentvolumeclaim:
     
 job:
   backoffLimit: 5
-  parallelism: 10
+  parallelism: 100
   ttlSecondsAfterFinished: 600
 
 fioconfig: "config/fio.ini"
