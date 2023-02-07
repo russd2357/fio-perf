@@ -15,6 +15,13 @@ spec:
       labels:
         {{- include "fio-perf-job.labels" . | nindent 8 }}
     spec:
+    {{if eq .Values.runOnSpot.enabled true}}
+      tolerations:
+      - key: "kubernetes.azure.com/scalesetpriority"
+        operator: "Equal"
+        value: "spot"
+        effect: "NoSchedule"    
+    {{ end }}
       containers:
       - name: {{ .Chart.Name }}
         resources:

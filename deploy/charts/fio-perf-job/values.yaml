@@ -17,6 +17,11 @@ persistentvolumeclaim:
   resources:
     requests:
       storage: 100Ti
+
+# Requires that an AKS node pool be set-up with spot instances
+
+runOnSpot: 
+  enabled: true
     
 job:
   backoffLimit: 5

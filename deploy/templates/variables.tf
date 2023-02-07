@@ -45,11 +45,16 @@ variable "azure_location" {
   default = "centralus"
 }
 
-
-
-variable "vm_sku" {
+variable "system_vm_sku" {
   type    = string
-  default = "Standard_D2_v2"
+  default = "Standard_DS2v2"
+}
+
+
+variable "nodepool_vm_sku" {
+  type    = string
+ // default = "Standard_D4d_v5"
+  default = "Standard_DS2v2"
 }
 
 variable "node_count" {
