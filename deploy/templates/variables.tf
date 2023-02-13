@@ -47,7 +47,7 @@ variable "azure_location" {
 
 variable "system_vm_sku" {
   type    = string
-  default = "Standard_DS2v2"
+  default = "standard_d2_v2"
 }
 
 
