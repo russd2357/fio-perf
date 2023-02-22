@@ -1,64 +1,58 @@
 variable "aksname" {
-  type    = string
-  default = "dapolinafilesperf"
+  type        = string
+  default     = "dapolinafilesperf"
+  description = "The name of the AKS cluster"
 }
 
-variable "list" {
-  type        = list(string)
-  description = "storage accounts"
-  default = [ "dapolinafilesperf01"]
-}
-
-variable "containers" {
-  type        = list(string)
-  description = "list of shares"
-  default = [ "fileshare01"]
-}
 variable "storageaccountname" {
-  type    = string
-  default = "dapolinasafileperf"
+  type        = string
+  default     = "dapolinasafileperf"
+  description = "The name of the storage account"
 }
 
 variable "account_tier" {
-  type = string
-  default = "Premium"
-  
+  type        = string
+  default     = "Premium"
+  description = "Storage tier for the storage account"
 }
 
 variable "nfs_share_enabled" {
-  type = bool
-  default = false
+  type        = bool
+  default     = false
+  description = "value to enable NFS or SMB"
 }
 
 variable "num_storage_accounts" {
-  default = 1 
+  default = 1
 }
 
-
 variable "account_kind" {
-  type = string
-  default = "FileStorage"
+  type        = string
+  default     = "FileStorage"
+  description = "Storage account kind"
 }
 
 variable "azure_location" {
-  type    = string
-  default = "centralus"
+  type        = string
+  default     = "centralus"
+  description = "The location of Azure resources"
 }
 
 variable "system_vm_sku" {
-  type    = string
-  default = "standard_d2_v2"
-}
-
-
-variable "nodepool_vm_sku" {
-  type    = string
- // default = "Standard_D4d_v5"
-  default = "Standard_DS2v2"
+  type        = string
+  default     = "standard_d2_v2"
+  description = "VM SKU for the system node pool"
 }
 
 variable "node_count" {
-  default = 1
+  default     = 1
+  description = "Number of nodes in the system node pool"
+}
+
+variable "nodepool_vm_sku" {
+  type        = string
+  default     = "Standard_D8d_v4"
+  description = "VM SKU for the node pool"
 }
 
 variable "service_cidr" {

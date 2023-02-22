@@ -1,8 +1,8 @@
 provider "azurerm" {
   features {
     resource_group {
-       prevent_deletion_if_contains_resources = false
-     }
+      prevent_deletion_if_contains_resources = false
+    }
   }
 }
 
@@ -24,14 +24,14 @@ resource "azurerm_kubernetes_cluster" "aks_c" {
   dns_prefix                = var.aksname
   workload_identity_enabled = true
   oidc_issuer_enabled       = true
-  sku_tier = "Paid"
+  sku_tier                  = "Paid"
 
   auto_scaler_profile {
-    expander              = "most-pods"
-    scan_interval         = "60s"
-    empty_bulk_delete_max = "100"
+    expander                   = "most-pods"
+    scan_interval              = "60s"
+    empty_bulk_delete_max      = "100"
     scale_down_delay_after_add = "4m"
-    scale_down_unready  = "4m"
+    scale_down_unready         = "4m"
   }
 
   network_profile {
@@ -44,13 +44,11 @@ resource "azurerm_kubernetes_cluster" "aks_c" {
   }
 
   default_node_pool {
-    name           = "default"
-    node_count     = var.node_count
-    vm_size        = var.system_vm_sku
-    vnet_subnet_id = azurerm_subnet.akssubnet.id
+    name                = "default"
+    node_count          = var.node_count
+    vm_size             = var.system_vm_sku
+    vnet_subnet_id      = azurerm_subnet.akssubnet.id
     enable_auto_scaling = false
-   # max_count           = 3
-  #  min_count           = 1
     kubelet_disk_type   = "Temporary"
   }
 
@@ -63,14 +61,14 @@ resource "azurerm_kubernetes_cluster" "aks_c" {
 resource "azurerm_kubernetes_cluster_node_pool" "spotpool" {
   name                  = "spotpool"
   kubernetes_cluster_id = azurerm_kubernetes_cluster.aks_c.id
-  node_count     = var.node_count
-  vm_size        = var.nodepool_vm_sku
-  vnet_subnet_id = azurerm_subnet.akssubnet.id
-  priority = "Spot"
-  enable_auto_scaling = true
-  max_count           = 100
-  min_count           = 1
-  kubelet_disk_type   = "Temporary"
+  node_count            = var.node_count
+  vm_size               = var.nodepool_vm_sku
+  vnet_subnet_id        = azurerm_subnet.akssubnet.id
+  priority              = "Spot"
+  enable_auto_scaling   = true
+  max_count             = 100
+  min_count             = 1
+  kubelet_disk_type     = "Temporary"
 
 }
 
