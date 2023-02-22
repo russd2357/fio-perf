@@ -25,6 +25,7 @@ echo "Running fio benchmark using the following file $FILE with a runtime of $RU
 
 fio --runtime $RUNTIME --output=$OUTPUT $FILE 
 
+echo "Testing gh actions"
 echo "Copying Test Results to logs"
 cp $OUTPUT $LOGS
 cat $OUTPUT
