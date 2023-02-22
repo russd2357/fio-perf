@@ -28,3 +28,14 @@ jobs:
         if: steps.filter.outputs.deploy.dockerBuild == 'true'
         run: cd ./deploy/dockerBuild; docker build . --file Dockerfile --tag dapolloxp/fio:$(date +%s)
  
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
