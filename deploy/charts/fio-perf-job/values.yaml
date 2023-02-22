@@ -3,7 +3,7 @@ storageclass:
     protocol: smb # nfs or smb
     skuName: Premium_LRS  # available values: Premium_LRS, Premium_ZRS
     enableLargeFileShares: "true"
-    shareName: "smbshare" # or smbshare if using smbshare
+    shareName: "fileshare01" # or smbshare if using smbshare
     storageAccountName: "dapolinasafileperf"
   reclaimPolicy: Delete
   volumeBindingMode: Immediate
@@ -17,11 +17,16 @@ persistentvolumeclaim:
   resources:
     requests:
       storage: 100Ti
+
+# Requires that an AKS node pool be set-up with spot instances
+
+runOnSpot: 
+  enabled: true
     
 job:
   backoffLimit: 5
-  parallelism: 1
-  ttlSecondsAfterFinished: 
+  parallelism: 100
+  ttlSecondsAfterFinished: 600
 
 fioconfig: "config/fio.ini"
 
@@ -29,7 +34,7 @@ image:
   repository: dapolloxp/fio
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart version.
-  tag: "2.0"
+  tag: "1.3"
 
 env:
   runtime: 600

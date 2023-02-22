@@ -23,7 +23,7 @@ spec:
     # make sure this volumeid is unique in the cluster
     # `#` is not allowed in self defined volumeHandle
     volumeHandle: unique-volumeid01
-    {{ if eq .Values.storageclass.parameters.protocol "nfs" }}
+    {{ if eq .Values.storageclass.parameters.protocol "smb" }}
     nodeStageSecretRef:
       name: azure-secret
       namespace: default
@@ -31,7 +31,7 @@ spec:
     volumeAttributes:
       resourceGroup: {{ .Values.aksRG }} # optional, only set this when storage account is not in the same resource group as agent node
       storageAccount: {{ .Values.storageclass.parameters.storageAccountName}}
-      shareName: {{ .Values.storageclass.parameters.shareName | default "nfsshare" | quote }}
+      shareName: {{ .Values.storageclass.parameters.shareName | default "fileshare01" | quote }}
       {{ if eq .Values.storageclass.parameters.protocol "nfs" }}
       protocol: nfs
       {{ else }}

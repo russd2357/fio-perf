@@ -15,6 +15,13 @@ spec:
       labels:
         {{- include "fio-perf-job.labels" . | nindent 8 }}
     spec:
+    {{if eq .Values.runOnSpot.enabled true}}
+      tolerations:
+      - key: "kubernetes.azure.com/scalesetpriority"
+        operator: "Equal"
+        value: "spot"
+        effect: "NoSchedule"    
+    {{ end }}
       containers:
       - name: {{ .Chart.Name }}
         resources:
@@ -23,7 +30,6 @@ spec:
             cpu: "250m"
           limits:
             memory: "2048Mi"
-
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}" 
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:

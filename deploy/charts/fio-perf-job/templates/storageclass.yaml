@@ -1,4 +1,3 @@
-#{{ if eq .Values.storageclass.parameters.protocol "nfs" }}
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:  
@@ -8,8 +7,6 @@ parameters:
   protocol: {{ .Values.storageclass.parameters.protocol | default "nfs" | quote}}
   skuName: {{ .Values.storageclass.parameters.skuName | default "Premium_LRS" | quote }} 
   enableLargeFileShares: {{ .Values.storageclass.parameters.enableLargeFileShares | default "true" | quote }}
-#  shareName: {{ .Values.storageclass.parameters.shareName | default "nfsshare" | quote }}
 reclaimPolicy: {{ .Values.storageclass.reclaimPolicy }}
 volumeBindingMode: {{ .Values.storageclass.volumeBindingMode }}
 allowVolumeExpansion: {{ .Values.storageclass.allowVolumeExpansion }}
-#{{ end }}
