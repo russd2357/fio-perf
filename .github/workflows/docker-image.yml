@@ -23,7 +23,15 @@ jobs:
       uses: azure/login@v1
       with:
         creds: '{"clientId":"${{ secrets.CLIENT_ID }}","clientSecret":"${{ secrets.CLIENT_SECRET }}","subscriptionId":"${{ secrets.SUBSCRIPTION_ID }}","tenantId":"${{ secrets.TENANT_ID }}"}'
-    
+   
+    - name: Azure CLI script
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.30.0
+        inlineScript: |
+          az account show
+          az storage -h
+          
     - name: Build the Docker image
       if: steps.filter.outputs.deploy.dockerBuild == 'true'
       run: cd ./deploy/dockerBuild; docker build . --file Dockerfile --tag my-image-name:$(date +%s)
