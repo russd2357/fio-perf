@@ -23,9 +23,8 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-  
           
       - name: Build the Docker image
         if: steps.filter.outputs.deploy.dockerBuild == 'true'
-        run: cd ./deploy/dockerBuild; docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+        run: cd ./deploy/dockerBuild; docker build . --file Dockerfile --tag dapolloxp/fio:$(date +%s)
  
