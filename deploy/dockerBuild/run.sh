@@ -19,11 +19,13 @@ else
 fi
 
 [ -z "$RUNTIME" ] && echo "No RUNTIME was found. Setting default of 60 seconds" && RUNTIME="${RUNTIME:=30}";
-[ -z "$OUTPUT" ] && echo "No OUTPUT was specified, using default tmp directory" && OUTPUT="${OUTPUT:=$LOGS/$HOSTNAME-fio.output}";
+[ -z "$OUTPUT" ] && echo "No OUTPUT was specified, using default tmp directory" && OUTPUT="${OUTPUT:=/tmp/$HOSTNAME-fio.output}";
 
 echo "Running fio benchmark using the following file $FILE with a runtime of $RUNTIME"
 
 fio --runtime $RUNTIME --output=$OUTPUT $FILE 
 
 echo "Completed Testing"
+echo "Copying output"
+cp $OUTPUT $LOGS
 cat $OUTPUT
