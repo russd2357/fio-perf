@@ -43,4 +43,4 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: dapolloxp/fio:$(date +%s)
+          tags: dapolloxp/fio:latest
