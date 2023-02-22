@@ -51,7 +51,6 @@ This deployment assumes that you have an Azure subscription with owner privilege
 | system_vm_sku | VM SKU for the system node pool | standard_d2_v2 |
 | nodepool_vm_sku | VM SKU for the node pool | Standard_D8d_v4 |
 | node_count | Number of nodes in the system node pool | 1 |
-| nodepool_vm_sku | VM SKU for the node pool | Standard_D8d_v4 |
 | service_cidr | Service CIDR | 10.211.0.0/16 |
 | dns_service_ip | dns_service_ip | 10.211.0.10 |
 | docker_bridge_cidr | Docker bridge CIDR | 172.17.0.1/16 |
