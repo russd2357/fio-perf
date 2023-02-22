@@ -9,13 +9,15 @@ on:
 jobs:
 
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-      
+      id: filter
+      with:
+        filters: |
+          deploy/dockerBuild:
+          - 'deploy/dockerBuild/**'
       
     - name: 'Az CLI login'
       uses: azure/login@v1
@@ -23,5 +25,6 @@ jobs:
         creds: '{"clientId":"${{ secrets.CLIENT_ID }}","clientSecret":"${{ secrets.CLIENT_SECRET }}","subscriptionId":"${{ secrets.SUBSCRIPTION_ID }}","tenantId":"${{ secrets.TENANT_ID }}"}'
     
     - name: Build the Docker image
+      if: steps.filter.outputs.deploy.dockerBuild == 'true'
       run: cd ./deploy/dockerBuild; docker build . --file Dockerfile --tag my-image-name:$(date +%s)
  
