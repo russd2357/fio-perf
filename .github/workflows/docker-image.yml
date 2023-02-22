@@ -11,28 +11,21 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-      id: filter
-      with:
-        filters: |
-          deploy/dockerBuild:
-          - 'deploy/dockerBuild/**'
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            deploy/dockerBuild:
+            - 'deploy/dockerBuild/**'
       
-    - name: 'Az CLI login'
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-   
-    - name: Azure CLI script
-      uses: azure/CLI@v1
-      with:
-        azcliversion: 2.30.0
-        inlineScript: |
-          az account show
-          az storage -h
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+  
           
-    - name: Build the Docker image
-      if: steps.filter.outputs.deploy.dockerBuild == 'true'
-      run: cd ./deploy/dockerBuild; docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      - name: Build the Docker image
+        if: steps.filter.outputs.deploy.dockerBuild == 'true'
+        run: cd ./deploy/dockerBuild; docker build . --file Dockerfile --tag my-image-name:$(date +%s)
  
