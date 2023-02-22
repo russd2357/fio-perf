@@ -14,6 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Set Release Version
+        run: |
+          echo "BUILD_VERSION=$(date --rfc-3339=date)" >> ${GITHUB_ENV}
       - uses: dorny/paths-filter@v2
         id: filter
         with:
@@ -42,4 +45,4 @@ jobs:
         with:
           context: "{{defaultContext}}:deploy/dockerBuild"
           push: true
-          tags: dapolloxp/fio:latest
+          tags: dapolloxp/fio:${{ env.BUILD_VERSION }}
