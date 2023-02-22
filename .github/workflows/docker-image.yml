@@ -22,11 +22,7 @@ jobs:
       - name: 'Az CLI login'
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-          
-      - name: Build the Docker image
-        if: steps.filter.outputs.deploy.dockerBuild == 'true'
-        run: cd ./deploy/dockerBuild; docker build . --file Dockerfile --tag dapolloxp/fio:$(date +%s)
+          creds: ${{ secrets.AZURE_CREDENTIALS }}          
  
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -40,6 +36,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
+        if: steps.filter.outputs.deploy.dockerBuild == 'true'
         uses: docker/build-push-action@v4
         with:
           context: "{{defaultContext}}:deploy/dockerBuild"
