@@ -65,5 +65,8 @@ terraform plan -var-file="testing.tfvars" -out demo.tfplan
 terraform apply "demo.tfplan"
 ```
 
+## Building the helm chart
+
+
 
 
