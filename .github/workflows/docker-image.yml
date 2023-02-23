@@ -18,14 +18,7 @@ on:
         type: "string"
 
 jobs:
-  update-semver:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v3
-        - uses: haya14busa/action-update-semver@v1
-          id: version
-          with:
-            major_version_tag_only: true  # (optional, default is "false")
+
   build:
     runs-on: ubuntu-latest
     steps:
@@ -33,8 +26,6 @@ jobs:
       - name: Set Release Version
         run: |
           echo "BUILD_VERSION=$(date --rfc-3339=date)" >> ${GITHUB_ENV}
-          tag_v=$(git describe --tags $(git rev-list --tags --max-count=1))
-          tag=$(echo $tag_v | sed 's/v//') >> ${TAG}
       - uses: dorny/paths-filter@v2
         id: filter
         with:
@@ -63,4 +54,4 @@ jobs:
         with:
           context: "{{defaultContext}}:deploy/dockerBuild"
           push: true
-          tags: dapolloxp/fio:${{ env.TAG }}
+          tags: dapolloxp/fio:${{ env.BUILD_VERSION }}
