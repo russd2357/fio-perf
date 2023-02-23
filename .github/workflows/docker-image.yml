@@ -1,5 +1,7 @@
 name: Docker Image CI
 
+
+
 on:
   push:
     paths:
@@ -7,6 +9,13 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "input the current number"
+        default: "v1.0.9"
+        type: "string"
 
 jobs:
   update-semver:
