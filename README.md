@@ -57,16 +57,38 @@ This deployment assumes that you have an Azure subscription with owner privilege
 
 ## Usage
 
+Ensure that the following commands are run from the following path:
+
+[YOUR_CUR_DIR]/fioperf/deploy/templates where your YOUR_CUR_DIR is the current directory where you've cloned the GitHub repo.
+
+The commands below assume that the default user variables settings have been overridden with a settings.tfvars file.
+
 ```bash
 terraform init
 
-terraform plan -var-file="testing.tfvars" -out demo.tfplan
+terraform plan -var-file="settings.tfvars" -out demo.tfplan
 
 terraform apply "demo.tfplan"
 ```
 
 ## Building the helm chart
 
+By default, the helm chart will pull from [DockerHub](https://hub.docker.com/repository/docker/dapolloxp/fio/general) with the following container image: [dapolloxp/fio:2023-02-24](https://hub.docker.com/layers/dapolloxp/fio/2023-02-24/images/sha256-d35fd48ea162a4729298271746a0cfd027932d43b8ad70b96dfed010181fce51?context=repo)*
 
+*NOTE: This container image is updated regularly and this document may not reflect the latest updates.*
+
+However, if you prefer to build out your own container image, the following commands can be run on a Linux x64 machine from the following directory: 
+
+**fioperf/deploy/dockerBuild**
+
+```bash
+docker build . -t [MY_REPO]/[IMAGE_NAME]:[MY_VER]
+```
+
+Where MY_REPO is the name of your container repository, IMAGE_NAME is the name of the container image, and MY_VER is version for the image. For example:
+
+```bash
+docker build . -t dapolina.azurecr.io/fioperf:1.0
+```
 
 
