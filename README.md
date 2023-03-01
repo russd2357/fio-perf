@@ -2,7 +2,15 @@
 
 ## Overview
 
-Azure Files is Microsoft Azure's managed  cloud file system that offers customers the ability to mount file shares from the cloud or on-premises while leveraging SMB and NFS protocols. This repo contains several deployments scripts using a packaged helm chart that enable an end-user to conduct file throughput and IOPS performance tests on a single Azure Files share.
+Azure Files is Microsoft Azure's managed  cloud file system that offers customers the ability to mount file shares from the cloud or on-premises while leveraging SMB and NFS protocols. This repo contains several deployments scripts using a packaged helm chart that enable an user to conduct file throughput and IOPS performance tests on a single Azure Files share.
+
+## High Level Architecture
+
+## How does it work?
+
+The terraform scripts deploy the infrastructure with an AKS cluster with the cluster autoscaler enabled and a single azure files share.
+
+helm deployment kicks off fio runs as k8s jobs. a parameter file is fed into the helm deployment which allows all pods to have the same fio parameters
 
 ## Artifacts
 
