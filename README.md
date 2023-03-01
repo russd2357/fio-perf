@@ -6,6 +6,8 @@ Azure Files is Microsoft Azure's managed  cloud file system that offers customer
 
 ## High Level Architecture
 
+![AKS Fio Perf Test Deployment](https://raw.githubusercontent.com/dapolloxp/fio-perf/main/images/fiodeploy.svg "FIO Perf")
+
 ## How does it work?
 
 The terraform scripts deploy the infrastructure with an AKS cluster with the cluster autoscaler enabled and a single azure files share.
