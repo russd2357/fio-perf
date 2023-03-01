@@ -97,10 +97,52 @@ However, if you prefer to build out your own container image, the following comm
 docker build . -t [MY_REPO]/[IMAGE_NAME]:[MY_VER]
 ```
 
-Where MY_REPO is the name of your container repository, IMAGE_NAME is the name of the container image, and MY_VER is version for the image. For example:
+Where [MY_REPO] is the name of your container repository, [IMAGE_NAME] is the name of the container image, and [MY_VER] is version for the image. For example:
 
 ```bash
 docker build . -t dapolina.azurecr.io/fioperf:1.0
 ```
 
+## Deploying the FIO Helm Chart
 
+### Packaging the Helm Chart
+
+The Helm charts are located in the **fioperf/deploy/charts** directory.
+
+To build out the helm package navigate to **fioperf/deploy/charts/fio-perf-job** and execute the following command:
+
+```bash
+helm package fio-perf-job --version=[YOUR_VERSION_NUMBER]
+```
+
+For example, if the Helm chart version is 1.0.0, the default, the package command would be as follows:
+
+```bash
+helm package fio-perf-job --version=1.0.0
+```
+This will generate a tgz file with the following name: fio-perf-job-1.0.0.tgz. This is the file that we can use to install the Helm chart
+
+### Modifying the value.yaml file
+
+The values.yaml file has the following default
+
+| Name | Description | Default |
+|-|-|-|
+| storageclass.parameters.protocol | TODO | - |
+| storageclass.parameters.skuName | TODO | TODO |
+| storageclass.parameters.enableLargeFileShares | TODO | TODO |
+| storageclass.parameters.shareName | TODO | TODO |
+| storageclass.reclaimPolicy | TODO | TODO |
+| storageclass.volumeBindingMode | TODO | TODO |
+| storageclass.allowVolumeExpansion | TODO | TODO |
+| aksRG | TODO | TODO |
+| persistentvolumeclaim.spec.accessModes | TODO | TODO |
+| persistentvolumeclaim.resources.requests.storage | TODO | TODO |
+| runOnSpot | Enables the Helm chart to run on spot pools if they exist | true |
+| job.backoffLimit |-| 5 |
+| job.parallelism |-| 100 |
+| job.ttlSecondsAfterFinished |-| 600 |
+| image.repository | - | dapolloxp/fio |
+| image.pullPolicy | The default image pull policy | IfNotPresent |
+| image.tag | The default image tag | 2023-02-23 |
+| env.runtime | The default job runtime | 600 |
