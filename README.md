@@ -124,7 +124,7 @@ This will generate a tgz file with the following name: fio-perf-job-1.0.0.tgz. T
 
 ### Modifying the value.yaml file
 
-The values.yaml file has the following default
+The values.yaml file uses the following defaults
 
 | Name | Description | Default |
 |-|-|-|
@@ -140,10 +140,10 @@ The values.yaml file has the following default
 | `persistentvolumeclaim.spec.accessModes` | The default access mode | `ReadWriteMany` |
 | `persistentvolumeclaim.resources.requests.storage` | The default | `100Ti` |
 | `runOnSpot` | Enables the Helm chart to run on spot pools if they exist | `true` |
-| `job.backoffLimit` |-| `5` |
-| `job.parallelism` |-| `100` |
-| `job.ttlSecondsAfterFinished` |-| `600` |
-| `image.repository` | - | `dapolloxp/fio` |
+| `job.backoffLimit` | The number of retries before considering a Job as failed | `5` |
+| `job.parallelism` | The default setting for parallel jobs | `100` |
+| `job.ttlSecondsAfterFinished` | The default clean-up time for completed jobs | `600` |
+| `image.repository` | The default image repository | `dapolloxp/fio` |
 | `image.pullPolicy` | The default image pull policy | `IfNotPresent` |
 | `image.tag` | The default image tag | `2023-02-23` |
 | `env.runtime` | The default job runtime | `600` |
