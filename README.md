@@ -53,19 +53,19 @@ This deployment assumes that you have an Azure subscription with owner privilege
 
 | Name | Description | Default |
 |-|-|-|
-| aksname | The name of the AKS cluster | - |
-| storageaccountname | Storage tier for the storage account | dapolinasafileperf |
-| account_tier | The Azure region used for deployments | Premium |
-| nfs_share_enabled | The value to enable NFS or SMB | false |
-| node_count | Number of nodes in the system node pool | 1 |
-| account_kind | Storage account kind | FileStorage |
-| azure_location | The Azure region used for deployments | centralus |
-| system_vm_sku | VM SKU for the system node pool | standard_d2_v2 |
-| nodepool_vm_sku | VM SKU for the node pool | Standard_D8d_v4 |
-| node_count | Number of nodes in the system node pool | 1 |
-| service_cidr | Service CIDR | 10.211.0.0/16 |
-| dns_service_ip | dns_service_ip | 10.211.0.10 |
-| docker_bridge_cidr | Docker bridge CIDR | 172.17.0.1/16 |
+| `aksname` | The name of the AKS cluster | - |
+| `storageaccountname` | Storage tier for the storage account | `dapolinasafileperf` |
+| `account_tier` | The Azure region used for deployments | `Premium` |
+| `nfs_share_enabled` | The value to enable NFS or SMB | `false` |
+| `node_count` | Number of nodes in the system node pool | `1` |
+| `account_kind` | Storage account kind | `FileStorage` |
+| `azure_location` | The Azure region used for deployments | `centralus` |
+| `system_vm_sku` | VM SKU for the system node pool | `standard_d2_v2` |
+| `nodepool_vm_sku` | VM SKU for the node pool | `Standard_D8d_v4` |
+| `node_count` | Number of nodes in the system node pool | `1` |
+| `service_cidr` | Service CIDR | `10.211.0.0/16` |
+| `dns_service_ip` | dns_service_ip | `10.211.0.10` |
+| `docker_bridge_cidr` | Docker bridge CIDR | `172.17.0.1/16` |
 
 ## Usage
 
@@ -128,21 +128,22 @@ The values.yaml file has the following default
 
 | Name | Description | Default |
 |-|-|-|
-| storageclass.parameters.protocol | TODO | - |
-| storageclass.parameters.skuName | TODO | TODO |
-| storageclass.parameters.enableLargeFileShares | TODO | TODO |
-| storageclass.parameters.shareName | TODO | TODO |
-| storageclass.reclaimPolicy | TODO | TODO |
-| storageclass.volumeBindingMode | TODO | TODO |
-| storageclass.allowVolumeExpansion | TODO | TODO |
-| aksRG | TODO | TODO |
-| persistentvolumeclaim.spec.accessModes | TODO | TODO |
-| persistentvolumeclaim.resources.requests.storage | TODO | TODO |
-| runOnSpot | Enables the Helm chart to run on spot pools if they exist | true |
-| job.backoffLimit |-| 5 |
-| job.parallelism |-| 100 |
-| job.ttlSecondsAfterFinished |-| 600 |
-| image.repository | - | dapolloxp/fio |
-| image.pullPolicy | The default image pull policy | IfNotPresent |
-| image.tag | The default image tag | 2023-02-23 |
-| env.runtime | The default job runtime | 600 |
+| `storageclass.parameters.protocol` | Default protocol. Must match what is configured with the Azure Files type | `smb` |
+| `storageclass.parameters.skuName` | Storage Account SKU | `Premium_LRS` |
+| `storageclass.parameters.enableLargeFileShares` | Setting to enable large file share support | `"true"` |
+| `storageclass.parameters.shareName` | Default Azure Files sharename. Must match what is configured with Azure Files | `"fileshare01"` |
+| `storageclass.parameters.storageAccountName` | Default storage account name. Must match what is configured in terraform | "dapolinasafileperf" |
+| `storageclass.reclaimPolicy` | The default reclaim policy | `Delete` |
+| `storageclass.volumeBindingMode` | The default volume binding mode | `Immediate` |
+| `storageclass.allowVolumeExpansion` | The default volume expansion mode | `true` |
+| `aksR`G | The resource group where the storage account exists | `aks-rg` |
+| `persistentvolumeclaim.spec.accessModes` | The default access mode | `ReadWriteMany` |
+| `persistentvolumeclaim.resources.requests.storage` | The default | `100Ti` |
+| `runOnSpot` | Enables the Helm chart to run on spot pools if they exist | `true` |
+| `job.backoffLimit` |-| `5` |
+| `job.parallelism` |-| `100` |
+| `job.ttlSecondsAfterFinished` |-| `600` |
+| `image.repository` | - | `dapolloxp/fio` |
+| `image.pullPolicy` | The default image pull policy | `IfNotPresent` |
+| `image.tag` | The default image tag | `2023-02-23` |
+| `env.runtime` | The default job runtime | `600` |
