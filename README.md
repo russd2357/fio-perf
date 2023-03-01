@@ -12,7 +12,9 @@ Azure Files is Microsoft Azure's managed  cloud file system that offers customer
 
 The terraform scripts deploy the infrastructure with an AKS cluster with the cluster autoscaler enabled and a single azure files share.
 
-helm deployment kicks off fio runs as k8s jobs. a parameter file is fed into the helm deployment which allows all pods to have the same fio parameters
+The Helm package deploys a kubernetes jobs which consists of one or more jobs, defined by the user, and can run on one or more nodes. An external parameter file is provided as an input to the helm deployment which enables kubernetes jobs to have the same fio parameters.
+
+Detailed instructions on customizing the helm chart is documented below in the **Deploying the FIO Helm Chart** section.
 
 ## Artifacts
 
