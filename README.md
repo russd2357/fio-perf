@@ -132,7 +132,7 @@ The values.yaml file has the following default
 | `storageclass.parameters.skuName` | Storage Account SKU | `Premium_LRS` |
 | `storageclass.parameters.enableLargeFileShares` | Setting to enable large file share support | `"true"` |
 | `storageclass.parameters.shareName` | Default Azure Files sharename. Must match what is configured with Azure Files | `"fileshare01"` |
-| `storageclass.parameters.storageAccountName` | Default storage account name. Must match what is configured in terraform | "dapolinasafileperf" |
+| `storageclass.parameters.storageAccountName` | Default storage account name. Must match what is configured in terraform | `"dapolinasafileperf"` |
 | `storageclass.reclaimPolicy` | The default reclaim policy | `Delete` |
 | `storageclass.volumeBindingMode` | The default volume binding mode | `Immediate` |
 | `storageclass.allowVolumeExpansion` | The default volume expansion mode | `true` |
