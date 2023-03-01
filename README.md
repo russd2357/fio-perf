@@ -136,7 +136,7 @@ The values.yaml file has the following default
 | `storageclass.reclaimPolicy` | The default reclaim policy | `Delete` |
 | `storageclass.volumeBindingMode` | The default volume binding mode | `Immediate` |
 | `storageclass.allowVolumeExpansion` | The default volume expansion mode | `true` |
-| `aksR`G | The resource group where the storage account exists | `aks-rg` |
+| `aksRG` | The resource group where the storage account exists | `aks-rg` |
 | `persistentvolumeclaim.spec.accessModes` | The default access mode | `ReadWriteMany` |
 | `persistentvolumeclaim.resources.requests.storage` | The default | `100Ti` |
 | `runOnSpot` | Enables the Helm chart to run on spot pools if they exist | `true` |
