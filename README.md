@@ -12,9 +12,11 @@ Azure Files is Microsoft Azure's managed  cloud file system that offers customer
 
 The terraform scripts deploy the infrastructure with an AKS cluster with the cluster autoscaler enabled and a single azure files share.
 
-The Helm package deploys a kubernetes jobs which consists of one or more jobs, defined by the user, and can run on one or more nodes. An external parameter file is provided as an input to the helm deployment which enables kubernetes jobs to have the same fio parameters.
+The Helm package deploys a kubernetes jobs which consists of one or more worker pods, defined by the user, and can run on one or more nodes. An external FIO parameter file is provided as an input to the helm deployment which enables kubernetes jobs to have the same FIO settings.
 
 Detailed instructions on customizing the helm chart is documented below in the **Deploying the FIO Helm Chart** section.
+
+Once the job is started and completed, the performance results can be viewed on the deployed Azure monitor workspace. The terraform scripts automatically
 
 ## Artifacts
 
@@ -155,10 +157,38 @@ The values.yaml file uses the following defaults
 | `image.tag` | The default image tag | `2023-02-23` |
 | `env.runtime` | The default job runtime | `600` |
 
+#### Modifying the fio parameter file
+
+By default, sample fio files are located in the following directory: `/fio-perf-job/config/`
+
 ### Installing the Helm package
 
-If the package name is `fio-perf-job-1.0.0.tgz`, and the fio parameters file is in the following directory `/fio-perf-job/config/fiorandreadiops.ini`, then the helm package installation command can be installed as follows:
+If the package name is `fio-perf-job-1.0.0.tgz`, and the fio parameters file is in the following directory `/fio-perf-job/config/fiorandreadiops.ini`, then the helm install command can be run as follows:
 
 ```bash
 helm upgrade -i HELM_INSTALLATION_NAME fio-perf-job-1.0.0.tgz -f fio-perf-job/values.yaml --set-file=fioconfig=./fio-perf-job/config/fiorandreadiops.ini
 ```
+Once the install kicks off and the job starts, you will see several pods running:
+
+```bash
+$ kubectl get job
+NAME                           COMPLETIONS   DURATION   AGE
+fiorandreadiops-fio-perf-job   0/1 of 100    2m56s      2m56s
+
+$ kubectl get po
+NAME                                 READY   STATUS              RESTARTS   AGE
+fiorandreadiops-fio-perf-job-49vw9   1/1     Running             0          2m24s
+fiorandreadiops-fio-perf-job-4pb2w   1/1     Running             0          2m24s
+fiorandreadiops-fio-perf-job-5cz7p   1/1     Running             0          2m24s
+...
+```
+Once the job completes, the resulting FIO output will be copied to the Azure File shares that was used for benchmarking.
+
+To view the generate FIO files, the following command can be run. Substitute the storage account name for your storage account name.
+
+```azurecli
+az storage file list --account-name dapolinasafileperf --share-name fileshare01 --query "[].name"
+```
+
+## Reviewing Performance Results
+
