@@ -159,7 +159,26 @@ The values.yaml file uses the following defaults
 
 #### Modifying the fio parameter file
 
-By default, sample fio files are located in the following directory: `/fio-perf-job/config/`
+By default, sample fio files are located in the following directory: `/fio-perf-job/config`. These files can be modified as needed. More information the available parameters can be found on [https://fio.readthedocs.io](https://fio.readthedocs.io/en/latest/fio_doc.html). Below is an example of an FIO parameter file:
+
+```ini
+[global]
+size=1g
+direct=1
+iodepth=16
+ioengine=libaio
+bs=24k
+numjobs=16
+nrfiles=4
+group_reporting=1
+filename_format=${HOSTNAME}.$jobname.$jobnum.$filenum
+time_based=600
+runtime=600
+ramp_time=60
+[randread1]
+rw=randread
+directory=/mnt/azurefiles/
+```
 
 ### Installing the Helm package
 
@@ -192,3 +211,35 @@ az storage file list --account-name dapolinasafileperf --share-name fileshare01 
 
 ## Reviewing Performance Results
 
+All pod metrics results are stored on Log Analytics. By default, this is located in the same resource group as the AKS cluster. In our example, this resource group is called `aks-rg`.
+
+To view IOPS for the file share, use the following KQL query:
+
+```kusto
+StorageFileLogs
+| where TimeGenerated > ago (2hr)
+| where OperationName == "Read"
+    or OperationName == "Nfs4Read"
+    or OperationName == "Write"
+    or OperationName == "Nfs4Write"
+| summarize IOPS=count() by OperationName, bin(TimeGenerated, 500ms)
+| render areachart
+```
+
+TODO PICTURE HERE
+
+To view IO bandwidth for the file share, use the following KQL query:
+
+```kusto
+StorageFileLogs
+| where TimeGenerated > ago (2hr)
+| where OperationName == "Write"
+    or OperationName == "Nfs4Write"
+    or OperationName == "Read"
+    or OperationName == "Nfs4Read"
+| summarize GiB_PerSecond =sum(ContentLengthHeader) / pow(1024, 3) by OperationName, bin(TimeGenerated, 300ms)
+| render areachart
+
+```
+
+TODO PICTURE HERE
