@@ -25,11 +25,11 @@ jobs:
         run: |
           if [ -z "${{ github.event.inputs.version }}" ];
           then
-            BUILD_VERSION=${{ github.event.inputs.version }}          
+            BUILD_VERSION=$(date --rfc-3339=date)           
           else
-            BUILD_VERSION=$(date --rfc-3339=date)       
+            BUILD_VERSION=${{ github.event.inputs.version }}  
           fi
-          echo $BUILD_VERSION
+          echo $BUILD_VERSION >> 
       - uses: dorny/paths-filter@v2
         id: filter
         with:
