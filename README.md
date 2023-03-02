@@ -28,7 +28,7 @@ This repo contains several artifacts to enable a the deployment of full test env
 
 ### Terraform Infrastructure Deployment
 
-## Prerequisites
+### Prerequisites
 
 This deployment assumes that you have an Azure subscription with owner privileges. This setup deploys several Azure Resources and grants RBAC roles to the AKS user managed identity to successfully enable an end-to-end test.
 
@@ -49,7 +49,7 @@ This deployment assumes that you have an Azure subscription with owner privilege
 | `azurerm_log_analytics_workspace` | A log analytics workspace to store the storage account performance metrics. |
 | `azurerm_monitor_diagnostic_setting` | An Azure monitor storage diagnostics setting to enable the file share to save performance metrics to the log analytics workspace. |
 
-## Variables
+#### Variables
 
 | Name | Description | Default |
 |-|-|-|
@@ -67,7 +67,7 @@ This deployment assumes that you have an Azure subscription with owner privilege
 | `dns_service_ip` | dns_service_ip | `10.211.0.10` |
 | `docker_bridge_cidr` | Docker bridge CIDR | `172.17.0.1/16` |
 
-## Usage
+#### Usage
 
 Ensure that the following commands are run from the following path:
 
