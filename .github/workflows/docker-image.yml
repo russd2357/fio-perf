@@ -29,7 +29,7 @@ jobs:
           else
             BUILD_VERSION=${{ github.event.inputs.version }}  
           fi
-          echo $BUILD_VERSION >> 
+          echo $BUILD_VERSION >> ${GITHUB_ENV}
       - uses: dorny/paths-filter@v2
         id: filter
         with:
