@@ -157,7 +157,7 @@ The values.yaml file uses the following defaults
 
 ### Installing the Helm package
 
-If the package name is fio-perf-job-1.0.0.tgz, and the fio parameters file is in the following directory `/fio-perf-job/config/fiorandreadiops.ini`, then the helm package installation command can be installed as follows:
+If the package name is `fio-perf-job-1.0.0.tgz`, and the fio parameters file is in the following directory `/fio-perf-job/config/fiorandreadiops.ini`, then the helm package installation command can be installed as follows:
 
 ```bash
 helm upgrade -i HELM_INSTALLATION_NAME fio-perf-job-1.0.0.tgz -f fio-perf-job/values.yaml --set-file=fioconfig=./fio-perf-job/config/fiorandreadiops.ini
