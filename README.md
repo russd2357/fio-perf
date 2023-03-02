@@ -226,7 +226,7 @@ StorageFileLogs
 | render areachart
 ```
 
-TODO PICTURE HERE
+![LAW Workspace FIO IOPS](https://raw.githubusercontent.com/dapolloxp/fio-perf/main/images/max_iops.svg "LAW Workspace FIO IOPS")
 
 To view IO bandwidth for the file share, use the following KQL query:
 

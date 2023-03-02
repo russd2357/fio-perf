@@ -25,7 +25,7 @@ runOnSpot:
     
 job:
   backoffLimit: 5
-  parallelism: 100
+  parallelism: 30
   ttlSecondsAfterFinished: 600
 
 fioconfig: "./fio-perf-job/config/fiorandreadiops.ini"
@@ -34,7 +34,7 @@ image:
   repository: dapolloxp/fio
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart version.
-  tag: "2023-02-23"
+  tag: "1.0.0"
 
 env:
   runtime: 600
