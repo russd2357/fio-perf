@@ -71,7 +71,13 @@ This deployment assumes that you have an Azure subscription with owner privilege
 
 Ensure that the following commands are run from the following path:
 
-[YOUR_CUR_DIR]/fioperf/deploy/templates where your YOUR_CUR_DIR is the current directory where you've cloned the GitHub repo.
+`[YOUR_CUR_DIR]/fioperf/deploy/templates` where your `YOUR_CUR_DIR` is the current directory where the GitHub repo was cloned.
+
+For example, on my machine, I am have this repo cloned to my user profile directory:
+
+```bash
+/Users/davidapolinar/fioperf/templates
+```
 
 The commands below assume that the default user variables settings have been overridden with a settings.tfvars file.
 
@@ -91,13 +97,13 @@ By default, the helm chart will pull from [DockerHub](https://hub.docker.com/rep
 
 However, if you prefer to build out your own container image, the following commands can be run on a Linux x64 machine from the following directory: 
 
-**fioperf/deploy/dockerBuild**
+`fioperf/deploy/dockerBuild`
 
 ```bash
 docker build . -t [MY_REPO]/[IMAGE_NAME]:[MY_VER]
 ```
 
-Where [MY_REPO] is the name of your container repository, [IMAGE_NAME] is the name of the container image, and [MY_VER] is version for the image. For example:
+Where [MY_REPO] is the name of your container repository, [IMAGE_NAME] is the name of the container image, and [MY_VER] is the image version. For example, in the command below, dapolina.azurecr.io is my container repository, fioperf is the image name, and 1.0 is the image version:
 
 ```bash
 docker build . -t dapolina.azurecr.io/fioperf:1.0
@@ -139,11 +145,20 @@ The values.yaml file uses the following defaults
 | `aksRG` | The resource group where the storage account exists | `aks-rg` |
 | `persistentvolumeclaim.spec.accessModes` | The default access mode | `ReadWriteMany` |
 | `persistentvolumeclaim.resources.requests.storage` | The default | `100Ti` |
-| `runOnSpot` | Enables the Helm chart to run on spot pools if they exist | `true` |
+| `runOnSpot.enabled` | Enables the Helm chart to run on spot pools if they exist | `true` |
 | `job.backoffLimit` | The number of retries before considering a Job as failed | `5` |
 | `job.parallelism` | The default setting for parallel jobs | `100` |
 | `job.ttlSecondsAfterFinished` | The default clean-up time for completed jobs | `600` |
+| `fioconfig` | The default fio config file | `/fio-perf-job/config/fiorandreadiops.ini` |
 | `image.repository` | The default image repository | `dapolloxp/fio` |
 | `image.pullPolicy` | The default image pull policy | `IfNotPresent` |
 | `image.tag` | The default image tag | `2023-02-23` |
 | `env.runtime` | The default job runtime | `600` |
+
+### Installing the Helm package
+
+If the package name is fio-perf-job-1.0.0.tgz, and the fio parameters file is in the following directory `/fio-perf-job/config/fiorandreadiops.ini`, then the helm package installation command can be installed as follows:
+
+```bash
+helm upgrade -i HELM_INSTALLATION_NAME fio-perf-job-1.0.0.tgz -f fio-perf-job/values.yaml --set-file=fioconfig=./fio-perf-job/config/fiorandreadiops.ini
+```

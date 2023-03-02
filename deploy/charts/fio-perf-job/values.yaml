@@ -28,7 +28,7 @@ job:
   parallelism: 100
   ttlSecondsAfterFinished: 600
 
-fioconfig: "config/fio.ini"
+fioconfig: "./fio-perf-job/config/fiorandreadiops.ini"
 
 image:
   repository: dapolloxp/fio
