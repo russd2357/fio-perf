@@ -38,7 +38,7 @@ resource "azurerm_storage_share" "azurefileshare" {
 }
 
 resource "azurerm_monitor_diagnostic_setting" "storage_diag" {
-  name                       = "storage_diag"
+  name                       = "storage_diag-${random_string.random.result}"
   target_resource_id         = "${azurerm_storage_account.storage_account.id}/fileServices/default"
   log_analytics_workspace_id = azurerm_log_analytics_workspace.law_c.id
 
