@@ -35,11 +35,11 @@ This repo contains several artifacts to enable a the deployment of full test env
 #### Terraform
 
 This deployment assumes that you are using the latest Terraform. Hashicorp has an excellent tutorial on how to install Terraform on Mac or Windows: 
-![Install Terraform](https://developer.hashicorp.com/terraform/tutorials/azure-get-started/install-cli)
+[Install Terraform](https://developer.hashicorp.com/terraform/tutorials/azure-get-started/install-cli)
 
 #### Helm
 
-This guide assumes that helm is installed. Detailed instructions can be found at: ![Install Hashicorp] (https://helm.sh/docs/intro/install/)
+This guide assumes that helm is installed. Detailed instructions can be found at: [Install Hashicorp](https://helm.sh/docs/intro/install/)
 
 #### Azure CLI
 
