@@ -32,6 +32,35 @@ This repo contains several artifacts to enable a the deployment of full test env
 
 ### Prerequisites
 
+#### Terraform
+
+This deployment assumes that you are using the latest Terraform. Hashicorp has an excellent tutorial on how to install Terraform on Mac or Windows: 
+![Install Terraform](https://developer.hashicorp.com/terraform/tutorials/azure-get-started/install-cli)
+
+#### Helm
+
+This guide assumes that helm is installed. Detailed instructions can be found at: ![Install Hashicorp] (https://helm.sh/docs/intro/install/)
+
+#### Azure CLI
+
+When the Terraform scripts are run, there is an assumption that the user has already logined into Azure and selected the proper subscription. Ensure that this step is completed.
+
+```azurecli
+az login
+
+az account set --subscription="YOUR_AZURE_SUBSCRIPTION"
+```
+#### kubectl commands are installed.
+
+This script runs commands to merge the local kubernetes management certificate into your local home drive located in ~/.kube, where ~ is the user profile home directory. If you do not have the kubectl command installed, this can be installed using the Azure CLI
+
+```azurecli
+az aks install-cli
+```
+
+
+#### Azure Permissions
+
 This deployment assumes that you have an Azure subscription with owner privileges. This setup deploys several Azure Resources and grants RBAC roles to the AKS user managed identity to successfully enable an end-to-end test.
 
 #### Resources
