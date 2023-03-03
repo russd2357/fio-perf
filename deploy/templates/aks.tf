@@ -83,6 +83,9 @@ resource "null_resource" "azure_files_secret_smb" {
     kubectl create secret generic azure-secret --from-literal=azurestorageaccountname=${azurerm_storage_account.storage_account.name} --from-literal=azurestorageaccountkey=${azurerm_storage_account.storage_account.primary_access_key}
   EOF
   }
+  depends_on = [
+    azurerm_kubernetes_cluster_node_pool.spotpool
+  ]
 }
 
 resource "azurerm_role_assignment" "rbac_assignment_sub_network_c" {
@@ -114,4 +117,23 @@ resource "azurerm_role_assignment" "rbac_assignment_sub_managed_vm_c" {
   scope                = data.azurerm_subscription.current_sub.id
   role_definition_name = "Virtual Machine Contributor"
   principal_id         = azurerm_kubernetes_cluster.aks_c.kubelet_identity[0].object_id
+}
+provider "kubernetes" {
+  config_path    = "~/.kube/config"
+  config_context = var.aksname
+}
+
+resource "kubernetes_secret" "sa_key" {
+  metadata {
+    name = "azure-secret"
+  }
+
+  data = {
+    azurestorageaccountname = azurerm_storage_account.storage_account.name
+    azurestorageaccountkey = azurerm_storage_account.storage_account.primary_access_key
+  }
+  depends_on = [
+    null_resource.azure_files_secret_smb
+  ]
+
 }
