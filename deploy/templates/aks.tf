@@ -74,13 +74,13 @@ resource "azurerm_kubernetes_cluster_node_pool" "spotpool" {
 
 data "azurerm_subscription" "current_sub" {
 }
-
+# kubectl create secret generic azure-secret --from-literal=azurestorageaccountname=${azurerm_storage_account.storage_account.name} --from-literal=azurestorageaccountkey=${azurerm_storage_account.storage_account.primary_access_key}
 resource "null_resource" "azure_files_secret_smb" {
   provisioner "local-exec" {
     when    = create
     command = <<EOF
     az aks get-credentials --resource-group ${azurerm_resource_group.aks-rg.name} --name ${azurerm_kubernetes_cluster.aks_c.name} --overwrite-existing
-    kubectl create secret generic azure-secret --from-literal=azurestorageaccountname=${azurerm_storage_account.storage_account.name} --from-literal=azurestorageaccountkey=${azurerm_storage_account.storage_account.primary_access_key}
+    
   EOF
   }
   depends_on = [
@@ -118,7 +118,7 @@ resource "azurerm_role_assignment" "rbac_assignment_sub_managed_vm_c" {
   role_definition_name = "Virtual Machine Contributor"
   principal_id         = azurerm_kubernetes_cluster.aks_c.kubelet_identity[0].object_id
 }
-/*
+
 provider "kubernetes" {
   host                   = azurerm_kubernetes_cluster.aks_c.kube_config.0.host
   username               = azurerm_kubernetes_cluster.aks_c.kube_config.0.username
@@ -130,7 +130,7 @@ provider "kubernetes" {
 resource "time_sleep" "wait_30_seconds" {
   depends_on = [null_resource.azure_files_secret_smb]
 
-  create_duration = "30s"
+  create_duration = "60s"
 }
 
 
@@ -144,4 +144,4 @@ resource "kubernetes_secret" "sa_key" {
     azurestorageaccountkey = azurerm_storage_account.storage_account.primary_access_key
   }
   depends_on = [time_sleep.wait_30_seconds]
-}*/
+}
