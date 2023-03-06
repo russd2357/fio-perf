@@ -110,6 +110,8 @@ For example, on my machine, I am have this repo cloned to my user profile direct
 /Users/davidapolinar/fioperf/templates
 ```
 
+==Note: There is a known issue when running this script on Windows. This script was tested on mac OS and Linux. To successfully, run this test, run it on the Linux subsystem for Windows.==
+
 The commands below assume that the default user variables settings have been overridden with a settings.tfvars file.
 
 ```bash
