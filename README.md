@@ -124,7 +124,7 @@ terraform apply "demo.tfplan"
 
 ## Building the helm chart
 
-By default, the helm chart will pull from [DockerHub](https://hub.docker.com/repository/docker/dapolloxp/fio/general) with the following container image: [dapolloxp/fio:2023-02-24](https://hub.docker.com/layers/dapolloxp/fio/2023-02-24/images/sha256-d35fd48ea162a4729298271746a0cfd027932d43b8ad70b96dfed010181fce51?context=repo)*
+By default, the helm chart will pull from [DockerHub](https://hub.docker.com/repository/docker/dapolloxp/fio/general) with the following container image: [dapolloxp/fio:1.0](https://hub.docker.com/layers/dapolloxp/fio/2023-02-24/images/sha256-d35fd48ea162a4729298271746a0cfd027932d43b8ad70b96dfed010181fce51?context=repo)*
 
 *NOTE: This container image is updated regularly and this document may not reflect the latest updates.*
 
