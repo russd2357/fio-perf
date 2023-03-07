@@ -130,7 +130,7 @@ provider "kubernetes" {
 resource "time_sleep" "wait_30_seconds" {
   depends_on = [null_resource.azure_files_secret_smb]
 
-  create_duration = "60s"
+  create_duration = "120s"
 }
 
 
