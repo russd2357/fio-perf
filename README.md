@@ -123,6 +123,13 @@ terraform apply "demo.tfplan"
 ```
 **<span style="color:red"><em>Security Warning: Currently, this terraform script outputs the storage account key to simply the next step. This is NOT recommended and is only done to simplify the deployment process.</em></span>**
 
+Example Output
+```azurecli
+Outputs:
+
+primary_access_key = [Reacted]
+storage_account_name = "dapolinasafileperf"
+```
 **<span style="color:red">Note: If you are deploying Azure Files Share with an SMB File share, the following command must be run prior to deploying the FIO helm chart, otherwise the pods will be stuck in a pending state.</span>**
 
 STORAGE_ACCOUNT_NAME and STORAGE_ACCOUNT_KEY will be displayed in the terraform output if SMB is enabled.
