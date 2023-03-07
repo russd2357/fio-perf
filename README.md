@@ -110,7 +110,7 @@ For example, on my machine, I am have this repo cloned to my user profile direct
 /Users/davidapolinar/fioperf/templates
 ```
 
-<span style="color:red">**Note: There is a known issue when running this script on Windows. This script was tested on mac OS and Linux. To successfully, run this test, run it on the Linux subsystem for Windows.**</span>
+
 
 The commands below assume that the default user variables settings have been overridden with a settings.tfvars file.
 
@@ -120,6 +120,14 @@ terraform init
 terraform plan -var-file="settings.tfvars" -out demo.tfplan
 
 terraform apply "demo.tfplan"
+```
+**<span style="color:red"><em>Security Warning: Currently, this terraform script outputs the storage account key to simply the next step. This is NOT recommended and is only done to simplify the deployment process.</em></span>**
+
+**<span style="color:red">Note: If you are deploying Azure Files Share with an SMB File share, the following command must be run prior to deploying the FIO helm chart, otherwise the pods will be stuck in a pending state.</span>**
+
+STORAGE_ACCOUNT_NAME and STORAGE_ACCOUNT_KEY will be displayed in the terraform output if SMB is enabled.
+```azurecli
+kubectl create secret generic azure-secret --from-literal=azurestorageaccountname=[STORAGE_ACCOUNT_NAME] --from-literal=azurestorageaccountkey=[STORAGE_ACCOUNT_KEY]
 ```
 
 ## Building the helm chart
