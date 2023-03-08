@@ -27,10 +27,10 @@ spec:
     nodeStageSecretRef:
       name: azure-secret
       namespace: default
-    {{ end}}
+    {{ end }}
     volumeAttributes:
       resourceGroup: {{ .Values.aksRG }} # optional, only set this when storage account is not in the same resource group as agent node
-      storageAccount: {{ .Values.storageclass.parameters.storageAccountName}}
+      storageAccount: {{ required "A valid .Values.storageAccount entry is required!" .Values.storageclass.parameters.storageAccountName}}
       shareName: {{ .Values.storageclass.parameters.shareName | default "fileshare01" | quote }}
       {{ if eq .Values.storageclass.parameters.protocol "nfs" }}
       protocol: nfs

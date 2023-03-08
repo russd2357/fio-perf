@@ -118,7 +118,7 @@ resource "azurerm_role_assignment" "rbac_assignment_sub_managed_vm_c" {
   role_definition_name = "Virtual Machine Contributor"
   principal_id         = azurerm_kubernetes_cluster.aks_c.kubelet_identity[0].object_id
 }
-/*
+
 provider "kubernetes" {
   host                   = azurerm_kubernetes_cluster.aks_c.kube_config.0.host
   username               = azurerm_kubernetes_cluster.aks_c.kube_config.0.username
@@ -131,9 +131,8 @@ provider "kubernetes" {
 resource "time_sleep" "wait_30_seconds" {
   depends_on = [null_resource.azure_files_secret_smb]
 
-  create_duration = "120s"
+  create_duration = "30s"
 }
-
 
 resource "kubernetes_secret" "sa_key" {
   metadata {
@@ -145,4 +144,4 @@ resource "kubernetes_secret" "sa_key" {
     azurestorageaccountkey = azurerm_storage_account.storage_account.primary_access_key
   }
   depends_on = [time_sleep.wait_30_seconds]
-}*/
+}

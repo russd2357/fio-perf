@@ -1,10 +1,10 @@
 storageclass:
   parameters:
-    protocol: smb # nfs or smb
+    protocol: smb # nfs or smb - must match the protocol in Azure
     skuName: Premium_LRS  # available values: Premium_LRS, Premium_ZRS
     enableLargeFileShares: "true"
-    shareName: "fileshare01" # or smbshare if using smbshare
-    storageAccountName: "dapolinasafileperf"
+    shareName: "fileshare01" # default share name - must match the share name in Azure
+    storageAccountName: null # must be supplied
   reclaimPolicy: Delete
   volumeBindingMode: Immediate
   allowVolumeExpansion: true
