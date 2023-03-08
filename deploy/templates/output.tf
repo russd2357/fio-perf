@@ -18,7 +18,7 @@ output "azure_files_protocol" {
 
 output "helm_sample_command" {
     # Example helm command:
-  value = "helm upgrade -i HELM_INSTALLATION_NAME fio-perf-job-1.0.0.tgz -f fio-perf-job/values.yaml --set-file=fioconfig=./fio-perf-job/config/fiorandreadiops.ini --set storageclass.parameters.storageAccountName=${azurerm_storage_account.storage_account.name} --set storageclass.parameters.protocol=${var.nfs_share_enabled ? "nfs" : "smb"}"
+  value = "helm install --generate-name fio-perf-job-1.0.0.tgz -f fio-perf-job/values.yaml --set-file=fioconfig=./fio-perf-job/config/fiorandreadiops.ini --set storageclass.parameters.storageAccountName=${azurerm_storage_account.storage_account.name} --set storageclass.parameters.protocol=${var.nfs_share_enabled ? "nfs" : "smb"}"
 }
 /*
 output "create_secret" {
