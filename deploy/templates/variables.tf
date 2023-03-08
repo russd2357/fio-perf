@@ -1,13 +1,13 @@
-variable "aksname" {
+variable "aksprefix" {
   type        = string
-  default     = "dapolinafilesperf"
-  description = "The name of the AKS cluster"
+  default     = "daaks"
+  description = "The AKS prefix"
 }
 
-variable "storageaccountname" {
+variable "storageaccountnameprefix" {
   type        = string
-  default     = "dapolinasafileperf"
-  description = "The name of the storage account"
+  default     = "dapol"
+  description = "The storage account name prefix"
 }
 
 variable "account_tier" {

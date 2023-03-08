@@ -4,7 +4,7 @@ data "http" "myip" {
 
 resource "azurerm_storage_account" "storage_account" {
 
-  name                      = var.storageaccountname
+  name                      = format("%s%s", var.storageaccountnameprefix, random_string.random.result)
   resource_group_name       = azurerm_resource_group.aks-rg.name
   location                  = azurerm_resource_group.aks-rg.location
   account_tier              = var.account_tier
@@ -25,10 +25,6 @@ resource "azurerm_storage_account" "storage_account" {
     }
   }
 }
-/*
-locals {
-    flat_list = setproduct(var.list, var.containers)
-}*/
 
 resource "azurerm_storage_share" "azurefileshare" {
   name                 = "fileshare01"

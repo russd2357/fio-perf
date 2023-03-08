@@ -18,10 +18,10 @@ resource "azurerm_user_assigned_identity" "aks_master_identity" {
 }
 
 resource "azurerm_kubernetes_cluster" "aks_c" {
-  name                      = var.aksname
+  name                      = format("%s%s", var.aksprefix, random_string.random.result)
   location                  = azurerm_resource_group.aks-rg.location
   resource_group_name       = azurerm_resource_group.aks-rg.name
-  dns_prefix                = var.aksname
+  dns_prefix                = format("%s%s", var.aksprefix, random_string.random.result)
   workload_identity_enabled = true
   oidc_issuer_enabled       = true
   sku_tier                  = "Paid"
