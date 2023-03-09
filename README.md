@@ -58,10 +58,41 @@ This script runs commands to merge the local kubernetes management certificate i
 az aks install-cli
 ```
 
-
 #### Azure Permissions
 
 This deployment assumes that you have an Azure subscription with owner privileges. This setup deploys several Azure Resources and grants RBAC roles to the AKS user managed identity to successfully enable an end-to-end test.
+
+#### AKS Preview Features
+This deployment takes advantage of some AKS features that are currently in preview. You will need to register for the preview before running this deployment. You can use the Azure CLI to do this. Assuming you have completed the login and set the active subscription as described above, register the KubeletDisk and EnableWorkloadIdentityPreview feature previews.
+
+```
+az feature register -n KubeletDisk --namespace microsoft.ContainerService
+az feature register -n EnableWorkloadIdentityPreview --namespace "Microsoft.ContainerService"
+```
+
+You will need to re-register the provider in order to propagate the change to your aubscription. You can check the state of the feature registration using this CLI command
+
+```
+az feature show --namespace "Microsoft.ContainerService" --name "EnableWorkloadIdentityPreview"
+```
+
+The output of this command looks like this
+```
+{
+  "id": "/subscriptions/<<YOUR_SUBSCRIPTION_ID/providers/Microsoft.Features/providers/Microsoft.ContainerService/features/EnableWorkloadIdentityPreview",
+  "name": "Microsoft.ContainerService/EnableWorkloadIdentityPreview",
+  "properties": {
+    "state": "Registered"
+  },
+  "type": "Microsoft.Features/providers/features"
+}
+```
+Use the command to check the registration state for *both features*. When the value of the state property for each one is ```Registered```, you can re-register the provider using this command,
+
+```
+az provider register -n microsoft.ContainerService
+```
+
 
 #### Resources
 
