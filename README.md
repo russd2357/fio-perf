@@ -84,8 +84,8 @@ This deployment assumes that you have an Azure subscription with owner privilege
 
 | Name | Description | Default |
 |-|-|-|
-| `aksname` | The name of the AKS cluster | - |
-| `storageaccountname` | Storage tier for the storage account | `dapolinasafileperf` |
+| `aksprefix` | A Prefix for the AKS cluster | `daaks` |
+| `storageaccountnameprefix` | Storage tier for the storage account | `dapol` |
 | `account_tier` | The Azure region used for deployments | `Premium` |
 | `nfs_share_enabled` | The value to enable NFS or SMB | `false` |
 | `node_count` | Number of nodes in the system node pool | `1` |
@@ -121,25 +121,11 @@ terraform plan -var-file="settings.tfvars" -out demo.tfplan
 
 terraform apply "demo.tfplan"
 ```
-**<span style="color:red"><em>Security Warning: Currently, this terraform script outputs the storage account key to simply the next step. This is NOT recommended and is only done to simplify the deployment process.</em></span>**
+## Packaging the helm chart
 
-Example Output
-```azurecli
-Outputs:
+### Optional - Create your own container
 
-primary_access_key = [Reacted]
-storage_account_name = "dapolinasafileperf"
-```
-**<span style="color:red">Note: If you are deploying Azure Files Share with an SMB File share, the following command must be run prior to deploying the FIO helm chart, otherwise the pods will be stuck in a pending state.</span>**
-
-STORAGE_ACCOUNT_NAME and STORAGE_ACCOUNT_KEY will be displayed in the terraform output if SMB is enabled.
-```azurecli
-kubectl create secret generic azure-secret --from-literal=azurestorageaccountname=[STORAGE_ACCOUNT_NAME] --from-literal=azurestorageaccountkey=[STORAGE_ACCOUNT_KEY]
-```
-
-## Building the helm chart
-
-By default, the helm chart will pull from [DockerHub](https://hub.docker.com/repository/docker/dapolloxp/fio/general) with the following container image: [dapolloxp/fio:1.0](https://hub.docker.com/layers/dapolloxp/fio/2023-02-24/images/sha256-d35fd48ea162a4729298271746a0cfd027932d43b8ad70b96dfed010181fce51?context=repo)*
+By default, the helm chart will pull the container image from [DockerHub](https://hub.docker.com/repository/docker/dapolloxp/fio/general): [dapolloxp/fio:1.0](https://hub.docker.com/layers/dapolloxp/fio/2023-02-24/images/sha256-d35fd48ea162a4729298271746a0cfd027932d43b8ad70b96dfed010181fce51?context=repo)*
 
 *NOTE: This container image is updated regularly and this document may not reflect the latest updates.*
 
@@ -174,7 +160,7 @@ For example, if the Helm chart version is 1.0.0, the default, the package comman
 ```bash
 helm package fio-perf-job --version=1.0.0
 ```
-This will generate a tgz file with the following name: fio-perf-job-1.0.0.tgz. This is the file that we can use to install the Helm chart
+This will generate a tgz file with the following name: `fio-perf-job-1.0.0.tgz`. This is the file that we can use to install the Helm chart
 
 ### Modifying the value.yaml file
 
@@ -182,10 +168,10 @@ The values.yaml file uses the following defaults
 
 | Name | Description | Default |
 |-|-|-|
-| `storageclass.parameters.protocol` | Default protocol. Must match what is configured with the Azure Files type | `smb` |
+| `storageclass.parameters.protocol` | Default protocol. Must match what is configured with the Azure Files Share type | `smb` |
 | `storageclass.parameters.skuName` | Storage Account SKU | `Premium_LRS` |
 | `storageclass.parameters.enableLargeFileShares` | Setting to enable large file share support | `"true"` |
-| `storageclass.parameters.shareName` | Default Azure Files sharename. Must match what is configured with Azure Files | `"fileshare01"` |
+| `storageclass.parameters.shareName` | Default Azure Files share name. Must match what is configured with Azure Files | `"fileshare01"` |
 | `storageclass.parameters.storageAccountName` | Default storage account name. Must match what is configured in terraform | `"dapolinasafileperf"` |
 | `storageclass.reclaimPolicy` | The default reclaim policy | `Delete` |
 | `storageclass.volumeBindingMode` | The default volume binding mode | `Immediate` |
@@ -205,7 +191,7 @@ The values.yaml file uses the following defaults
 
 #### Modifying the fio parameter file
 
-By default, sample fio files are located in the following directory: `/fio-perf-job/config`. These files can be modified as needed. More information the available parameters can be found on [https://fio.readthedocs.io](https://fio.readthedocs.io/en/latest/fio_doc.html). Below is an example of an FIO parameter file:
+By default, sample fio files are located in the following directory: `/fio-perf-job/config`. These files can be modified as needed. More information on the available parameters can be found on [https://fio.readthedocs.io](https://fio.readthedocs.io/en/latest/fio_doc.html). Below is an example of an FIO parameter file:
 
 ```ini
 [global]
@@ -231,20 +217,25 @@ directory=/mnt/azurefiles/
 If the package name is `fio-perf-job-1.0.0.tgz`, and the fio parameters file is in the following directory `/fio-perf-job/config/fiorandreadiops.ini`, then the helm install command can be run as follows:
 
 ```bash
-helm upgrade -i HELM_INSTALLATION_NAME fio-perf-job-1.0.0.tgz -f fio-perf-job/values.yaml --set-file=fioconfig=./fio-perf-job/config/fiorandreadiops.ini
+helm install --generate-name fio-perf-job-1.0.0.tgz -f fio-perf-job/values.yaml --set-file=fioconfig=./fio-perf-job/config/fiorandreadiops.ini
 ```
 Once the install kicks off and the job starts, you will see several pods running:
 
 ```bash
+$ helm list 
+NAME                            NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                   APP VERSION
+fio-perf-job-1-1678370182       default         1               2023-03-09 08:56:23.419338 -0500 EST    deployed        fio-perf-job-1.0.0      1.0.0 
+
 $ kubectl get job
-NAME                           COMPLETIONS   DURATION   AGE
-fiorandreadiops-fio-perf-job   0/1 of 100    2m56s      2m56s
+NAME                        COMPLETIONS   DURATION   AGE
+fio-perf-job-1-1678370182   0/1 of 30     4m         4m
 
 $ kubectl get po
 NAME                                 READY   STATUS              RESTARTS   AGE
-fiorandreadiops-fio-perf-job-49vw9   1/1     Running             0          2m24s
-fiorandreadiops-fio-perf-job-4pb2w   1/1     Running             0          2m24s
-fiorandreadiops-fio-perf-job-5cz7p   1/1     Running             0          2m24s
+fio-perf-job-1-1678370182-27dqd   1/1     Running       0          3m29s
+fio-perf-job-1-1678370182-28vtk   1/1     Running       0          3m29s
+fio-perf-job-1-1678370182-4zxbc   1/1     Running       0          3m29s
+fio-perf-job-1-1678370182-56zhw   1/1     Running       0          3m29s
 ...
 ```
 Once the job completes, the resulting FIO output will be copied to the Azure File shares that was used for benchmarking.

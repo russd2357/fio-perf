@@ -129,8 +129,7 @@ provider "kubernetes" {
 }
 
 resource "time_sleep" "wait_30_seconds" {
-  depends_on = [null_resource.azure_files_secret_smb]
-
+  depends_on      = [null_resource.azure_files_secret_smb]
   create_duration = "30s"
 }
 
@@ -141,7 +140,7 @@ resource "kubernetes_secret" "sa_key" {
 
   data = {
     azurestorageaccountname = azurerm_storage_account.storage_account.name
-    azurestorageaccountkey = azurerm_storage_account.storage_account.primary_access_key
+    azurestorageaccountkey  = azurerm_storage_account.storage_account.primary_access_key
   }
   depends_on = [time_sleep.wait_30_seconds]
 }
