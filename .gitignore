@@ -13,7 +13,8 @@ archive/*
 
 *.tfvars
 **/archive/*
-**/ignore/*
+**/ignore/**
+
 
 # Local .terraform directories
 **/.terraform/*
