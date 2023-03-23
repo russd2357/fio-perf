@@ -11,7 +11,7 @@ Session.vim
 
 archive/*
 
-*.tfvars
+#*.tfvars
 **/archive/*
 **/ignore/**
 

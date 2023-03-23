@@ -69,3 +69,27 @@ variable "docker_bridge_cidr" {
   description = "Docker bridge CIDR"
   default     = "172.17.0.1/16"
 }
+
+variable "tf_state_sa_name" {
+  type        = string
+  default     = "dapolinatfstate"
+  description = "The name of the storage account to store the terraform state"
+}
+
+variable "tf_state_rg_name" {
+  type        = string
+  default     = "dapolinatfstate"
+  description = "The name of the resource group to store the terraform state"
+}
+  
+variable "tf_state_container_name" {
+  type        = string
+  default     = "tfstatecontainer"
+  description = "The name of the container to store the terraform state"
+}
+
+variable "tf_state_key" {
+  type        = string
+  default     = "terraform.tfstate"
+  description = "The name of the key to store the terraform state"
+}
