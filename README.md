@@ -140,7 +140,8 @@ For example, on my machine, I am have this repo cloned to my user profile direct
 ```bash
 /Users/davidapolinar/fioperf/templates
 ```
-
+## Terraform State Management
+In this example, state is stored in an Azure Storage account that was created out-of-band.  All deployments reference this storage account to either store state or reference variables from other parts of the deployment however you may choose to use other tools for state management, like Terraform Cloud after making the necessary code changes.
 
 
 The commands below assume that the default user variables settings have been overridden with a settings.tfvars file.

@@ -70,6 +70,12 @@ variable "docker_bridge_cidr" {
   default     = "172.17.0.1/16"
 }
 
+##################################################
+## 01 Remote Storage State configuration
+##################################################
+
+# State storage information
+
 variable "tf_state_sa_name" {
   type        = string
   default     = "dapolinatfstate"

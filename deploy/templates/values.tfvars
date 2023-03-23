@@ -1,7 +1,12 @@
 aksprefix                = "aks"
 storageaccountnameprefix = "dasa"
 nfs_share_enabled        = true
-tf_state_rg_name        = "var.tf_state_rg_name"
-tf_state_sa_name        = "var.tf_state_sa_name"
-tf_state_container_name = "var.tf_state_container_name"
-tf_state_key            = "var.tf_state_key"
+##################################################
+## 01 Remote Storage State configuration
+##################################################
+
+# Deployment state storage information
+tf_state_rg_name        = "dapolinatfstate"
+tf_state_sa_name        = "dapolinatfstate" 
+tf_state_container_name = "tfstatecontainer"
+tf_state_key            = "terraform.tfstate"
