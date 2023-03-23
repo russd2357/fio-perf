@@ -143,13 +143,52 @@ For example, on my machine, I am have this repo cloned to my user profile direct
 ## Terraform State Management
 In this example, state is stored in an Azure Storage account that was created out-of-band.  All deployments reference this storage account to either store state or reference variables from other parts of the deployment however you may choose to use other tools for state management, like Terraform Cloud after making the necessary code changes.
 
+## Creating an out of band storage account for state management
 
-The commands below assume that the default user variables settings have been overridden with a settings.tfvars file.
 
 ```bash
+# Bash
+REGION=<REGION>
+STORAGEACCOUNTNAME=<STORAGEACCOUNTNAME>
+CONTAINERNAME=<TERRAFORMSTATECONTAINER>
+TFSTATE_RG=<STORAGERESOURCEGROUP>
+```
+Create a Resource Group:
+```bash
+az group create --name $TFSTATE_RG --location $REGION
+```
+
+Create a Storage Account:
+```bash
+az storage account create -n $STORAGEACCOUNTNAME -g $TFSTATE_RG -l $REGION --sku Standard_LRS
+```
+
+Create a Storage Container within the Storage Account:
+
+```bash
+az storage container-rm create --storage-account $STORAGEACCOUNTNAME --name $CONTAINERNAME -g $TFSTATE_RG
+```
+## Modify the backend.conf file with the storage variables
+
+To store the state on the newly created storage account, modify the `backend.conf` file:
+
+```ini
+resource_group_name  = <STORAGERESOURCEGROUP>
+storage_account_name = <STORAGEACCOUNTNAME>
+container_name       = <TERRAFORMSTATECONTAINER>
+key                  = "terraform.tfstate"
+```
+
+
+The commands below assume that the default user variables settings have been overridden with a values.tfvars file. If using you are storing the state in an azure storage account, you can provide the `backend.conf`
+
+```bash
+# Run this command if the storage account was created and the backend.conf values were populated (Recommended)
+terraform init -backend-config=backend.conf
+# Run this command is a local state file will be used
 terraform init
 
-terraform plan -var-file="settings.tfvars" -out demo.tfplan
+terraform plan -var-file="values.tfvars" -out demo.tfplan
 
 terraform apply "demo.tfplan"
 ```
